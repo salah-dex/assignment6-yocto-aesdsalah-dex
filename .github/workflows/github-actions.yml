@@ -19,7 +19,8 @@ jobs:
           - name: Run build
             timeout-minutes: 600
             run: |
-               docker run --rm \
+                sudo sysctl -w fs.inotify.max_user_watches=524288
+                 docker run --rm \
                  -v $SSH_AUTH_SOCK:/ssh-agent -e SSH_AUTH_SOCK=/ssh-agent \
                  -e GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" \
                  -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} \
