@@ -1,0 +1,32 @@
+#!/bin/sh
+
+case "$1" in
+    start)
+        echo "Loading ldd kernel modules..."
+
+        modprobe scull || echo "ERROR: failed to load scull"
+        modprobe faulty || echo "ERROR: failed to load faulty"   
+        insmod /lib/modules/$(uname -r)/faulty.ko || echo "ERROR: failed to load faulty"
+        modprobe hello || echo "ERROR: failed to load hello"
+        ;;
+
+    stop)
+        echo "Unloading ldd kernel modules..."
+
+        rmmod hello
+        rmmod faulty
+        rmmod scull
+        ;;
+
+    restart)
+        $0 stop
+        $0 start
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac
+
+exit 0
